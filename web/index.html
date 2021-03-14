@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>getFunctions</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/hchiam/css-boilerplate@3.2.0/style.css"
+      integrity="sha384-bNDIb02CEQaNkOgyN7XrbxvBunWNmemBNBgPwavxWanjP/lnmSKEZaufDDgOEUuG"
+      crossorigin="anonymous"
+    />
+    <style id="style_overrides">
+      textarea:not(:disabled):hover,
+      textarea:not(:disabled):active,
+      textarea:not(:disabled):focus {
+        background: black !important;
+        color: white !important;
+      }
+      h2 {
+        text-align: center;
+      }
+      .group {
+        text-align: center;
+        margin: 1em;
+      }
+      #analyze {
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>(All analysis is done client-side)</h2>
+    <div class="group">
+      <button id="analyze">Analyze</button>
+    </div>
+    <div class="group">
+      <textarea id="code" cols="50" rows="20" placeholder="(Code to analyze)">
+function outer() {
+  function inner() {
+    function innerInner() {
+      function innerInnerInner() {}
+    }
+  }
+  let anotherInner = () => {};
+  var yetAnotherInner = () => {};
+  const another = function () {};
+}
+
+const add = (a, b) => {
+  return a + b;
+};
+
+const multiply = (a, b, c = 1) => {
+  return a * b * c;
+};
+
+$(".selector1")
+  .off("click")
+  .on("click", function () {
+    alert();
+  });
+
+const el = $(".selector2");
+el.off("click").on("click", function () {
+  alert();
+});        
+</textarea
+      >
+      <textarea
+        id="output"
+        cols="50"
+        rows="20"
+        placeholder="(Analysis output)"
+        disabled
+      ></textarea>
+    </div>
+    <script
+      src="https://unpkg.com/esprima@4.0.1/dist/esprima.js"
+      integrity="sha384-wMlsNLSZGSmn4HUrPLHj1nsNH6cJbjy3qjyeHb3bvq8oHhB79SV05X3anfpYo6f4"
+      crossorigin="anonymous"
+    ></script>
+    <script src="index.js"></script>
+  </body>
+</html>
