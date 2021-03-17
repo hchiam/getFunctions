@@ -1,6 +1,4 @@
 const fs = require("fs");
-const esprima = require("esprima");
-
 const process = require("./index");
 
 test("works on try.js", () => {
@@ -23,6 +21,10 @@ multiply
 
 $(".selector1")    .on("click"
 el    .on("click"
+
+
+UserAccount
+UserAccount.prototype.method1
 `;
 
     expect(output).toBe(expected);

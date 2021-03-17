@@ -27,3 +27,15 @@ const el = $(".selector2");
 el.off("click").on("click", function () {
   alert();
 });
+
+class UserAccount {
+  name: string;
+  id: number;
+
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+
+  method1() {}
+}

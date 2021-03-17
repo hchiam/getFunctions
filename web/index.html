@@ -12,6 +12,9 @@
       crossorigin="anonymous"
     />
     <style id="style_overrides">
+      textarea {
+        font-family: monospace;
+      }
       textarea:not(:disabled):hover,
       textarea:not(:disabled):active,
       textarea:not(:disabled):focus {
@@ -29,6 +32,11 @@
         font-size: large;
       }
     </style>
+    <script
+      src="https://unpkg.com/typescript@4.2.3/lib/typescriptServices.js"
+      integrity="sha384-ifq2/SgXybfzInJUkWyUncxq15ispuNVPV3S66w2Ha4Fagvyjme2RxtxF8PfCsrj"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <h2>(All analysis is done client-side)</h2>
@@ -65,7 +73,19 @@ $(".selector1")
 const el = $(".selector2");
 el.off("click").on("click", function () {
   alert();
-});        
+});
+
+class UserAccount {
+  name: string;
+  id: number;
+
+  constructor(name: string, id: number) {
+    this.name = name;
+    this.id = id;
+  }
+
+  method1() {}
+}
 </textarea
       >
       <textarea

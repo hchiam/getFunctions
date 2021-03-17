@@ -3,7 +3,7 @@ const outputTextarea = document.querySelector("#output");
 
 analyzeButton.addEventListener("click", function () {
   const text = document.querySelector("#code").value;
-  const output = process(text);
+  const output = process(tsToJs(text));
   console.log(output);
   outputTextarea.value = output;
 });
@@ -13,6 +13,8 @@ function process(text) {
   // console.log(JSON.stringify(list, null, 2));
   let output = list.map((tree) => getFunction(tree)).join("");
   output += "\n\n" + getJQueryEventListeners(text);
+  const functionsSoFar = getFunctionsSoFar(output);
+  output += "\n\n" + getMoreFunctions(text, functionsSoFar);
   return output;
 }
 
@@ -64,4 +66,52 @@ function getJQueryEventListeners(text) {
     output += `${selector ?? ""}    ${event ?? ""}\n`;
   }
   return output;
+}
+
+function getMoreFunctions(text, functionNamesSoFar = new Set()) {
+  let output = "";
+
+  const regexFunction = /\s*?function\s*?(\S+?)\s*?\(/g;
+  let matches = text.matchAll(regexFunction);
+  let indexOfFunctionName = 1;
+  for (const match of matches) {
+    const functionName = match[indexOfFunctionName].trim();
+    if (!functionNamesSoFar.has(functionName)) {
+      output += `${functionName}\n`;
+      functionNamesSoFar.add(functionName);
+    }
+  }
+
+  const regexPropEqualsFunction = /\s*?(\S+?)\s*?=\s*?function\s*?\(/g;
+  matches = text.matchAll(regexPropEqualsFunction);
+  indexOfFunctionName = 1;
+  for (const match of matches) {
+    const functionName = match[indexOfFunctionName].trim();
+    if (!functionNamesSoFar.has(functionName)) {
+      output += `${functionName}\n`;
+      functionNamesSoFar.add(functionName);
+    }
+  }
+
+  return output;
+}
+
+function getFunctionsSoFar(multilineStringOfFunctionNames) {
+  const output = new Set();
+  const lines = multilineStringOfFunctionNames.split("\n");
+  lines.map((f) => {
+    output.add(f.trim());
+  });
+  return output;
+}
+
+function tsToJs(tsCodeString) {
+  if (
+    typeof ts !== "undefined" ||
+    (typeof window !== "undefined" && window.ts)
+  ) {
+    return ts.transpile(tsCodeString);
+  } else {
+    return tsCodeString;
+  }
 }
