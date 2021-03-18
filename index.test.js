@@ -23,8 +23,10 @@ $(".selector1")    .on("click"
 el    .on("click"
 
 
-UserAccount
-UserAccount.prototype.method1
+
+    UserAccount
+
+    UserAccount.prototype.method1
 `;
 
     expect(output).toBe(expected);

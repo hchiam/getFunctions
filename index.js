@@ -16,12 +16,13 @@ function runThisFileDirectly(fileName) {
       console.error(err);
       return;
     }
-    const output = process(tsToJs(text));
+    const output = process(text);
     console.log(output);
   });
 }
 
 function process(text) {
+  text = tsToJs(text);
   const list = esprima.parseScript(text).body;
   // console.log(JSON.stringify(list, null, 2));
   let output = list.map((tree) => getFunction(tree)).join("");
@@ -84,24 +85,28 @@ function getJQueryEventListeners(text) {
 function getMoreFunctions(text, functionNamesSoFar = new Set()) {
   let output = "";
 
-  const regexFunction = /\s*?function\s*?(\S+?)\s*?\(/g;
+  const regexFunction = /(\s*?)function\s*?(\S+?)\s*?\(/g;
   let matches = text.matchAll(regexFunction);
-  let indexOfFunctionName = 1;
+  let indexOfFunctionName = 2;
+  let indexOfIndent = 1;
   for (const match of matches) {
+    const indent = match[indexOfIndent];
     const functionName = match[indexOfFunctionName].trim();
     if (!functionNamesSoFar.has(functionName)) {
-      output += `${functionName}\n`;
+      output += `${indent}${functionName}\n`;
       functionNamesSoFar.add(functionName);
     }
   }
 
-  const regexPropEqualsFunction = /\s*?(\S+?)\s*?=\s*?function\s*?\(/g;
+  const regexPropEqualsFunction = /(\s*?)(\S+?)\s*?=\s*?function\s*?\(/g;
   matches = text.matchAll(regexPropEqualsFunction);
-  indexOfFunctionName = 1;
+  indexOfFunctionName = 2;
+  indexOfIndent = 1;
   for (const match of matches) {
+    const indent = match[indexOfIndent];
     const functionName = match[indexOfFunctionName].trim();
     if (!functionNamesSoFar.has(functionName)) {
-      output += `${functionName}\n`;
+      output += `${indent}${functionName}\n`;
       functionNamesSoFar.add(functionName);
     }
   }
